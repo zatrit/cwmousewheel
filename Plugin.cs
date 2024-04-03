@@ -1,28 +1,26 @@
-﻿﻿extern alias RealUnity;
-
-using BepInEx;
-using BepInEx.Configuration;
+﻿﻿using BepInEx;
 using HarmonyLib;
-using RealUnity::UnityEngine;
 using static CWMouseWheel.MyPluginInfo;
+
+#pragma warning disable IDE0051 // Remove unused private members
 
 namespace CWMouseWheel;
 
 [BepInPlugin(PLUGIN_GUID, PLUGIN_NAME, PLUGIN_VERSION)]
 public class Plugin : BaseUnityPlugin {
-    private static KeyboardShortcut? Zoom = null;
-
-    public static bool IsZoomKeyPressed => Zoom!.Value.IsDown();
-
-    public static bool InvertScroll;
+    public static new PluginConfig? Config;
 
     void Awake() {
-        var enabled = Config.Bind("Input", "Enabled", true).Value;
-        Zoom = Config.Bind<KeyboardShortcut>("Input", "Camera zoom key", new(KeyCode.Z)).Value;
-        InvertScroll = Config.Bind("Input", "Invert scrool", true).Value;
+        var harmony = new Harmony(PLUGIN_GUID);
+        Config = new(base.Config);
 
-        if (enabled) {
-            new Harmony(PLUGIN_GUID).PatchAll();
-        }
+        Config.OnPluginToggled += enabled => {
+            if (enabled)
+                harmony.PatchAll();
+            else
+                harmony.UnpatchSelf();
+        };
+
+        Config.Reload();
     }
 }

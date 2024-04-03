@@ -17,12 +17,13 @@ public class ChangeSlot {
     public static void Prefix(Player ___player) {
         if (___player.data.isLocal && ___player.data.physicsAreReady &&
             !___player.HasLockedInput() && ___player.TryGetInventory(out var inventory)) {
-            if (Plugin.IsZoomKeyPressed) {
+            var config = Plugin.Config!;
+            if (config.IsZoomKeyPressed) {
                 return;
             }
 
             var curSlot = ___player.data.selectedItemSlot;
-            var delta = Math.Sign(Input.GetAxis("Mouse ScrollWheel")) * (Plugin.InvertScroll ? -1 : 1);
+            var delta = Math.Sign(Input.GetAxis("Mouse ScrollWheel")) * (config.InvertScroll! ? -1 : 1);
             var slots = inventory.slots;
 
             if (delta == 0 || slots.All(slot => slot.ItemInSlot.item == null)) {
@@ -48,13 +49,14 @@ public class ZoomKeyCheck {
             yield return code;
 
             if (wasHoldCheck) {
-                noZoomLabel = (Label) code.operand;
+                noZoomLabel = (Label)code.operand;
             }
 
             // Checks is ZoomKey pressed
             if (code.Calls(typeof(GlobalInputHandler).GetMethod("CanTakeInput"))) {
                 yield return new(Brfalse, noZoomLabel);
-                yield return new(Call, typeof(Plugin).GetProperty("IsZoomKeyPressed").GetMethod);
+                yield return new(Ldsfld, typeof(Plugin).GetField("Config"));
+                yield return new(Callvirt, typeof(PluginConfig).GetProperty("IsZoomKeyPressed").GetMethod);
             }
 
             wasHoldCheck = code.LoadsField(typeof(ItemInstanceBehaviour).GetField("isHeldByMe"));
