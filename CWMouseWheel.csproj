@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.1</TargetFramework>
     <AssemblyName>CWMouseWheel</AssemblyName>
     <Description>Allows to switch inventory slots using mouse wheel</Description>
-    <Version>1.0.3</Version>
+    <Version>1.0.4</Version>
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
   </PropertyGroup>
@@ -17,6 +17,10 @@
 
     <Reference Include="Assembly-CSharp" Private="false">
       <HintPath>$(CW_DIR)/Content Warning_Data/Managed/Assembly-CSharp.dll</HintPath>
+    </Reference>
+
+    <Reference Include="Unity.Mathematics" Private="false">
+      <HintPath>$(CW_DIR)/Content Warning_Data/Managed/Unity.Mathematics.dll</HintPath>
     </Reference>
 
     <Reference Include="UnityEngine.CoreModule" Private="false">

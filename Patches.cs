@@ -6,7 +6,7 @@ using System.Linq;
 using System.Reflection.Emit;
 using HarmonyLib;
 using RealUnity::UnityEngine;
-
+using Unity.Mathematics;
 using static System.Reflection.Emit.OpCodes;
 
 namespace CWMouseWheel.Patches;
@@ -41,25 +41,14 @@ public class ChangeSlot {
 
 [HarmonyPatch(typeof(VideoCamera), "Update")]
 public class ZoomKeyCheck {
-    static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> codes) {
-        Label? noZoomLabel = null;
-        bool wasHoldCheck = false;
-
-        foreach (var code in codes) {
-            yield return code;
-
-            if (wasHoldCheck) {
-                noZoomLabel = (Label)code.operand;
-            }
-
-            // Checks is ZoomKey pressed
-            if (code.Calls(typeof(GlobalInputHandler).GetMethod("CanTakeInput"))) {
-                yield return new(Brfalse, noZoomLabel);
-                yield return new(Ldsfld, typeof(Plugin).GetField("Config"));
-                yield return new(Callvirt, typeof(PluginConfig).GetProperty("IsZoomKeyPressed").GetMethod);
-            }
-
-            wasHoldCheck = code.LoadsField(typeof(ItemInstanceBehaviour).GetField("isHeldByMe"));
-        }
-    }
+    static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> codes) =>
+        new CodeMatcher(codes)
+            .MatchForward(true, new CodeMatch(Call, typeof(GlobalInputHandler).GetMethod("CanTakeInput")))
+            .CreateLabelAt(2, out var noZoomLabel)
+            .Insert(
+                new(Ldsfld, typeof(Plugin).GetField("Config")),
+                new(Callvirt, typeof(PluginConfig).GetProperty("IsZoomKeyPressed").GetMethod),
+                new(Brfalse, noZoomLabel)
+            )
+            .InstructionEnumeration();
 }

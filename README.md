@@ -1,7 +1,7 @@
 # CWMouseWheel
-With this mod you can scroll your items with the mouse wheel.
+With this mod YOU can scroll your items with the mouse wheel.
 
-To use the camera zoom, there is a separate key (Z by default).
+To use the camera zoom, press Z and scroll as in vanilla game.
 
 ### Compilation from source
 
