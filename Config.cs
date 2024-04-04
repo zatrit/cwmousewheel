@@ -16,9 +16,9 @@ public class PluginConfig {
     public bool InvertScroll => _invertScroll!.Value;
     public bool SkipEmptySlots => _skipEmptySlots!.Value;
 
-    public string ZoomKeyName => _zoomKey!.Value.MainKey.ToString();
+    public string? ZoomKeyName => _zoomKey?.Value.MainKey.ToString();
 
-    public ModToggleHandler OnPluginToggled = new(_ => { });
+    public ModToggleHandler OnPluginToggled = _ => {};
 
     public void Init(ConfigFile config) {
         var enabled = config.Bind("Input", "Enabled", true);
@@ -30,6 +30,6 @@ public class PluginConfig {
             OnPluginToggled(((ConfigEntry<bool>)((SettingChangedEventArgs)a).ChangedSetting).Value);
         };
 
-        OnPluginToggled(enabled!.Value);
+        OnPluginToggled(enabled.Value);
     }
 }

@@ -20,7 +20,7 @@ public class ChangeSlot {
             }
 
             var curSlot = ___player.data.selectedItemSlot;
-            var delta = Math.Sign(Input.GetAxis("Mouse ScrollWheel")) * (config.InvertScroll! ? -1 : 1);
+            var delta = Math.Sign(Input.GetAxis("Mouse ScrollWheel")) * (config.InvertScroll ? -1 : 1);
             var slots = inventory.slots;
 
             if (delta == 0 || !config.SkipEmptySlots && slots.All(slot => slot.ItemInSlot.item == null)) {
