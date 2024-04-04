@@ -8,24 +8,26 @@ public delegate void ModToggleHandler(bool enabled);
 public class PluginConfig {
     static readonly KeyboardShortcut _defaultZoomKey = new(KeyCode.Z);
 
-    readonly ConfigEntry<KeyboardShortcut> _zoomKey;
-    readonly ConfigEntry<bool> _invertScroll;
-    readonly ConfigEntry<bool> _enabled;
+    private ConfigEntry<KeyboardShortcut>? _zoomKey;
+    private ConfigEntry<bool>? _invertScroll;
+    private ConfigEntry<bool>? _skipEmptySlots;
 
-    public bool IsZoomKeyPressed => _zoomKey.Value.IsPressed();
+    public bool IsZoomKeyPressed => _zoomKey!.Value.IsPressed();
     public bool InvertScroll => _invertScroll!.Value;
+    public bool SkipEmptySlots => _skipEmptySlots!.Value;
 
     public ModToggleHandler OnPluginToggled = new(_ => { });
 
-    public PluginConfig(ConfigFile config) {
+    public void Init(ConfigFile config) {
+        var enabled = config.Bind("Input", "Enabled", true);
         _zoomKey = config.Bind("Input", "Camera zoom key", _defaultZoomKey);
         _invertScroll = config.Bind("Input", "Invert scroll", true);
-        _enabled = config.Bind("Input", "Enabled", true);
+        _skipEmptySlots = config.Bind("Input", "Skip empty slots", true);
 
-        _enabled.SettingChanged += (s, a) => {
+        enabled.SettingChanged += (s, a) => {
             OnPluginToggled(((ConfigEntry<bool>)((SettingChangedEventArgs)a).ChangedSetting).Value);
         };
-    }
 
-    public void Reload() => OnPluginToggled(_enabled.Value);
+        OnPluginToggled(enabled!.Value);
+    }
 }

@@ -29,7 +29,7 @@ public class ChangeSlot {
 
             do {
                 curSlot = (curSlot + delta + slots.Length) % slots.Length;
-            } while (!inventory.TryGetItemInSlot(curSlot, out _));
+            } while (config.SkipEmptySlots && !inventory.TryGetItemInSlot(curSlot, out _));
 
             ___player.data.selectedItemSlot = curSlot;
         }
