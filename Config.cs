@@ -16,6 +16,8 @@ public class PluginConfig {
     public bool InvertScroll => _invertScroll!.Value;
     public bool SkipEmptySlots => _skipEmptySlots!.Value;
 
+    public string ZoomKeyName => _zoomKey!.Value.MainKey.ToString();
+
     public ModToggleHandler OnPluginToggled = new(_ => { });
 
     public void Init(ConfigFile config) {

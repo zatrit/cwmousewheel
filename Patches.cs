@@ -23,7 +23,7 @@ public class ChangeSlot {
             var delta = Math.Sign(Input.GetAxis("Mouse ScrollWheel")) * (config.InvertScroll! ? -1 : 1);
             var slots = inventory.slots;
 
-            if (delta == 0 || slots.All(slot => slot.ItemInSlot.item == null)) {
+            if (delta == 0 || !config.SkipEmptySlots && slots.All(slot => slot.ItemInSlot.item == null)) {
                 return;
             }
 
@@ -41,7 +41,7 @@ public class ZoomKeyCheck {
     static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> codes) {
         var matcher = new CodeMatcher(codes)
             .MatchForward(true, new CodeMatch(Call, typeof(GlobalInputHandler).GetMethod("CanTakeInput")));
-        var noZoomLabel = (Label) matcher.InstructionAt(1).operand;
+        var noZoomLabel = (Label)matcher.InstructionAt(1).operand;
 
         return matcher
             .MatchForward(true, new CodeMatch(Call, typeof(GlobalInputHandler).GetMethod("CanTakeInput")))
@@ -51,5 +51,17 @@ public class ZoomKeyCheck {
                 new(Brfalse, noZoomLabel)
             )
             .InstructionEnumeration();
+    }
+}
+
+[HarmonyPatch(typeof(ItemKeyTooltip), "GetString")]
+public class ZoomKeyInfo {
+    private const string SCROLL_PREFIX = "[Scroll]";
+    private static string ZoomPrefix => string.Format("[{0} + Scroll]", Plugin.Config.ZoomKeyName);
+
+    static void Postfix(ref string __result, ref string ___m_key) {
+        if (__result.StartsWith(SCROLL_PREFIX)) {
+            __result = ___m_key.Replace(SCROLL_PREFIX, ZoomPrefix);
+        }
     }
 }
