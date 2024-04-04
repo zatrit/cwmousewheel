@@ -1,11 +1,9 @@
-extern alias RealUnity;
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Emit;
 using HarmonyLib;
-using RealUnity::UnityEngine;
+using UnityEngine;
 using static System.Reflection.Emit.OpCodes;
 
 namespace CWMouseWheel.Patches;

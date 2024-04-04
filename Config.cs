@@ -1,6 +1,5 @@
-extern alias RealUnity;
 using BepInEx.Configuration;
-using RealUnity::UnityEngine;
+using UnityEngine;
 
 namespace CWMouseWheel;
 
