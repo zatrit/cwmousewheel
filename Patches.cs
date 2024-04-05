@@ -1,10 +1,7 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Emit;
 using HarmonyLib;
 using UnityEngine;
-using static System.Reflection.Emit.OpCodes;
 
 namespace CWMouseWheel.Patches;
 
@@ -36,32 +33,14 @@ public class ChangeSlot {
     }
 }
 
-[HarmonyPatch(typeof(VideoCamera), "Update")]
-public class ZoomKeyCheck {
-    static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> codes) {
-        var matcher = new CodeMatcher(codes)
-            .MatchForward(true, new CodeMatch(Call, typeof(GlobalInputHandler).GetMethod("CanTakeInput")));
-        var noZoomLabel = (Label)matcher.InstructionAt(1).operand;
-
-        return matcher
-            .MatchForward(true, new CodeMatch(Call, typeof(GlobalInputHandler).GetMethod("CanTakeInput")))
-            .Insert(
-                new(Ldsfld, typeof(Plugin).GetField("Config")),
-                new(Callvirt, typeof(PluginConfig).GetProperty("IsZoomKeyPressed").GetMethod),
-                new(Brfalse, noZoomLabel)
-            )
-            .InstructionEnumeration();
-    }
-}
-
 [HarmonyPatch(typeof(ItemKeyTooltip), "GetString")]
 public class ZoomKeyInfo {
     private const string SCROLL_PREFIX = "[Scroll]";
-    private static string ZoomPrefix => string.Format("[{0} + Scroll]", Plugin.Config.ZoomKeyName);
+    private static string ZoomPrefix => $"[{Plugin.Config.ZoomKeyName} + Scroll]";
 
     static void Postfix(ref string __result, ref string ___m_key) {
         if (__result.StartsWith(SCROLL_PREFIX)) {
-            __result = ___m_key.Replace(SCROLL_PREFIX, ZoomPrefix);
+            __result = ZoomPrefix + ___m_key[SCROLL_PREFIX.Length..];
         }
     }
 }
