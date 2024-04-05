@@ -1,9 +1,8 @@
+using System;
 using BepInEx.Configuration;
 using UnityEngine;
 
 namespace CWMouseWheel;
-
-public delegate void ModToggleHandler(bool enabled);
 
 public class PluginConfig {
     static readonly KeyboardShortcut _defaultZoomKey = new(KeyCode.Z);
@@ -18,7 +17,7 @@ public class PluginConfig {
 
     public string? ZoomKeyName => _zoomKey?.Value.MainKey.ToString();
 
-    public ModToggleHandler OnPluginToggled = _ => {};
+    public Action<bool> OnPluginToggled = _ => {};
 
     public void Init(ConfigFile config) {
         var enabled = config.Bind("Input", "Enabled", true);
