@@ -18,7 +18,7 @@ jobs:
           token: ${{ secrets.THUNDERSTORE_TOKEN }}
           name: CWMouseWheel # the name of the package
           version: ${{ github.ref_name }} # Use the tag as the package version
-          community: Content Warning
+          community: content-warning
           categories: | # <-- notice this pipe character
             mods
           deps: |
