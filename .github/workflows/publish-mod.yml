@@ -24,3 +24,6 @@ jobs:
           deps: |
             BepInEx-BepInExPack@5.4.2100
           repo: https://thunderstore.io
+          path: thunderstore
+          icon: icon.png
+          readme: ../README.md
