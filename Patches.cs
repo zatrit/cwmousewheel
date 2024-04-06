@@ -30,7 +30,7 @@ public class ChangeSlot {
             }
 
             do {
-                curSlot = (curSlot + delta + slots.Length) % itemCount;
+                curSlot = (curSlot + delta + itemCount) % itemCount;
             } while (config.SkipEmptySlots && !inventory.TryGetItemInSlot(curSlot, out _));
 
             ___player.data.selectedItemSlot = curSlot;

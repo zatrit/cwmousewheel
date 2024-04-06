@@ -1,1 +1,1 @@
-* Returned mod DLL
+* Fixed ``SkipArtifactSlot`` behavior
