@@ -25,5 +25,4 @@ jobs:
             BepInEx-BepInExPack@5.4.2100
           repo: https://thunderstore.io
           path: thunderstore
-          icon: icon.png
-          readme: ../README.md
+          readme: https://raw.githubusercontent.com/zatrit/cwmousewheel/main/README.md
