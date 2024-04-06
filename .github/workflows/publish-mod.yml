@@ -1,0 +1,25 @@
+name: Publish Mod
+
+# Run when a new release is... released
+on:
+  release:
+    types: [published]
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      # Use checkout to publish the files in your repo
+      - uses: actions/checkout@v3
+      - uses: GreenTF/upload-thunderstore-package@v4.2
+        with:
+          namespace: zatrit # the thunderstore 'team' to publish under
+          description: Allows to switch inventory slots using mouse wheel
+          token: ${{ secrets.THUNDERSTORE_TOKEN }}
+          name: CWMouseWheel # the name of the package
+          version: ${{ github.ref_name }} # Use the tag as the package version
+          community: Content Warning
+          categories: | # <-- notice this pipe character
+            mods
+          deps: |
+            BepInEx-BepInExPack@5.4.2100

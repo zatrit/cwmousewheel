@@ -24,8 +24,13 @@ public class ChangeSlot {
                 return;
             }
 
+            var itemCount = slots.Length;
+            if (config.SkipArtifactSlot) {
+                itemCount -= 1;
+            }
+
             do {
-                curSlot = (curSlot + delta + slots.Length) % slots.Length;
+                curSlot = (curSlot + delta + slots.Length) % itemCount;
             } while (config.SkipEmptySlots && !inventory.TryGetItemInSlot(curSlot, out _));
 
             ___player.data.selectedItemSlot = curSlot;
