@@ -23,3 +23,5 @@ jobs:
             mods
           deps: |
             BepInEx-BepInExPack@5.4.2100
+          dev: true
+          repo: thunderstore.io
