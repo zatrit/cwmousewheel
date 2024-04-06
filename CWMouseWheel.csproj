@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.1</TargetFramework>
     <AssemblyName>CWMouseWheel</AssemblyName>
     <Description>Allows to switch inventory slots using mouse wheel</Description>
-    <Version>1.0.17</Version>
+    <Version>1.0.18</Version>
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
 

@@ -1,4 +1,4 @@
-name: Publish Mod
+name: Build and publish Mod
 
 # Run when a new release is... released
 on:
@@ -6,11 +6,24 @@ on:
     types: [published]
 
 jobs:
-  publish:
+  build-and-publish:
     runs-on: ubuntu-latest
+
     steps:
       # Use checkout to publish the files in your repo
       - uses: actions/checkout@v3
+
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Build project using dotnet
+        run: dotnet build -P:Configuration=Release
+
+      - name: Copy assemblies to the publishing directory
+        run: cp ${{ github.workspace }}/bin/Release/netstandard2.1/CWMouseWheel.dll ${{ github.workspace }}/thunderstore
+
       - uses: GreenTF/upload-thunderstore-package@v4.2
         with:
           namespace: zatrit # the thunderstore 'team' to publish under
