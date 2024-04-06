@@ -9,32 +9,34 @@ namespace CWMouseWheel.Patches;
 public class ChangeSlot {
     [HarmonyPrefix]
     public static void Prefix(Player ___player) {
-        if (___player.data.isLocal && ___player.data.physicsAreReady &&
-            !___player.HasLockedInput() && ___player.TryGetInventory(out var inventory)) {
-            var config = Plugin.Config!;
-            if (config.IsZoomKeyPressed) {
-                return;
-            }
-
-            var curSlot = ___player.data.selectedItemSlot;
-            var delta = Math.Sign(Input.GetAxis("Mouse ScrollWheel")) * (config.InvertScroll ? -1 : 1);
-            var slots = inventory.slots;
-
-            if (delta == 0 || config.SkipEmptySlots && slots.All(slot => slot.ItemInSlot.item == null)) {
-                return;
-            }
-
-            var itemCount = slots.Length;
-            if (config.SkipArtifactSlot) {
-                itemCount -= 1;
-            }
-
-            do {
-                curSlot = (curSlot + delta + itemCount) % itemCount;
-            } while (config.SkipEmptySlots && !inventory.TryGetItemInSlot(curSlot, out _));
-
-            ___player.data.selectedItemSlot = curSlot;
+        if (!___player.data.isLocal || !___player.data.physicsAreReady ||
+            ___player.HasLockedInput() || !___player.TryGetInventory(out var inventory)) {
+            return;
         }
+
+        var config = Plugin.Config!;
+        if (config.IsZoomKeyPressed) {
+            return;
+        }
+
+        var curSlot = ___player.data.selectedItemSlot;
+        var delta = Math.Sign(Input.GetAxis("Mouse ScrollWheel")) * (config.InvertScroll ? -1 : 1);
+        var slots = inventory.slots;
+
+        if (delta == 0 || config.SkipEmptySlots && slots.All(slot => slot.ItemInSlot.item == null)) {
+            return;
+        }
+
+        var itemCount = slots.Length;
+        if (config.SkipArtifactSlot) {
+            itemCount -= 1;
+        }
+
+        do {
+            curSlot = (curSlot + delta + itemCount) % itemCount;
+        } while (config.SkipEmptySlots && !inventory.TryGetItemInSlot(curSlot, out _));
+
+        ___player.data.selectedItemSlot = curSlot;
     }
 }
 
