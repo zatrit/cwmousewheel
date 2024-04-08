@@ -8,11 +8,12 @@ namespace CWMouseWheel;
 
 [BepInPlugin(PLUGIN_GUID, PLUGIN_NAME, PLUGIN_VERSION)]
 public class Plugin : BaseUnityPlugin {
-    public static new PluginConfig Config = new();
+    public static new PluginConfig? Config;
 
     void Awake() {
         var harmony = new Harmony(PLUGIN_GUID);
 
+        Config = new PluginConfig(base.Config);
         Config.OnPluginToggled += enabled => {
             if (enabled)
                 harmony.PatchAll();
@@ -20,6 +21,6 @@ public class Plugin : BaseUnityPlugin {
                 harmony.UnpatchSelf();
         };
 
-        Config.Init(base.Config);
+        Config.Init();
     }
 }

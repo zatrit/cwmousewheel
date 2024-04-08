@@ -12,3 +12,4 @@ When using BepInEx.ConfigurationManager, all settings are applied as soon as the
 * ``Camera zoom key`` - key used in combination with the scroll key to zoom the camera
 * ``Invert scroll`` - reverses scroll direction
 * ``Skip empty slots`` - makes mod skip empty slots when scrolling
+* ``Skip artifact slot`` - skips artifact slot (the last hidden slot)

@@ -3,6 +3,8 @@ using System.Linq;
 using HarmonyLib;
 using UnityEngine;
 
+using static CWMouseWheel.Plugin;
+
 namespace CWMouseWheel.Patches;
 
 [HarmonyPatch(typeof(PlayerItems), "Update")]
@@ -14,7 +16,7 @@ public class ChangeSlot {
             return;
         }
 
-        var config = Plugin.Config!;
+        var config = Config!;
         if (config.IsZoomKeyPressed) {
             return;
         }
@@ -43,7 +45,7 @@ public class ChangeSlot {
 [HarmonyPatch(typeof(ItemKeyTooltip), "GetString")]
 public class ZoomKeyInfo {
     private const string SCROLL_PREFIX = "[Scroll]";
-    private static string ZoomPrefix => $"[{Plugin.Config.ZoomKeyName} + Scroll]";
+    private static string ZoomPrefix => $"[{Config!.ZoomKeyName} + Scroll]";
 
     static void Postfix(ref string __result, ref string ___m_key) {
         if (__result.StartsWith(SCROLL_PREFIX)) {
