@@ -4,13 +4,13 @@ name: Build and publish Mod
 on:
   release:
     types: [published]
+  workflow_dispatch:
 
 jobs:
-  build-and-publish:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      # Use checkout to publish the files in your repo
       - uses: actions/checkout@v3
 
       - name: Setup dotnet
@@ -21,8 +21,20 @@ jobs:
       - name: Build project using dotnet
         run: dotnet build -P:Configuration=Release
 
-      - name: Copy assemblies to the publishing directory
-        run: cp ${{ github.workspace }}/bin/Release/netstandard2.1/CWMouseWheel.dll ${{ github.workspace }}/thunderstore
+      - uses: actions/upload-artifact@v4
+        with:
+          name: CWMouseWheel.dll
+          path: ${{ github.workspace }}/bin/Release/netstandard2.1/CWMouseWheel.dll
+
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/download-artifact@v4
+        with:
+          path: ${{ github.workspace }}/thunderstore
 
       - uses: GreenTF/upload-thunderstore-package@v4.2
         with:
