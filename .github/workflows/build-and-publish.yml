@@ -23,7 +23,7 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: CWMouseWheel.dll
+          name: CWMouseWheel
           path: ${{ github.workspace }}/bin/Release/netstandard2.1/CWMouseWheel.dll
 
   publish:
@@ -34,6 +34,7 @@ jobs:
 
       - uses: actions/download-artifact@v4
         with:
+          name: CWMouseWheel
           path: ${{ github.workspace }}/thunderstore
 
       - uses: GreenTF/upload-thunderstore-package@v4.2
