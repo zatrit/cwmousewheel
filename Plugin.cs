@@ -1,4 +1,4 @@
-﻿﻿using BepInEx;
+﻿using BepInEx;
 using HarmonyLib;
 using static CWMouseWheel.MyPluginInfo;
 
@@ -6,6 +6,7 @@ using static CWMouseWheel.MyPluginInfo;
 
 namespace CWMouseWheel;
 
+[ContentWarningPlugin(PLUGIN_GUID, PLUGIN_VERSION, vanillaCompatible: true)]
 [BepInPlugin(PLUGIN_GUID, PLUGIN_NAME, PLUGIN_VERSION)]
 public class Plugin : BaseUnityPlugin {
     public static new PluginConfig? Config;

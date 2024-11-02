@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.1</TargetFramework>
     <AssemblyName>CWMouseWheel</AssemblyName>
     <Description>Allows to switch inventory slots using mouse wheel</Description>
-    <Version>1.0.20</Version>
+    <Version>1.0.21</Version>
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
 
@@ -17,6 +17,6 @@
     <PackageReference Include="BepInEx.PluginInfoProps" Version="2.*" />
 
     <PackageReference Include="UnityEngine.Modules" Version="2022.3.10" />
-    <PackageReference Include="ContentWarning.GameLibs.Steam" Version="0.1.7-a-ngd.0" />
+    <PackageReference Include="ContentWarning.GameLibs.Steam" Version="0.1.11-a-ngd.0" />
   </ItemGroup>
 </Project>
